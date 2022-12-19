@@ -64,6 +64,6 @@ public:
 
 public:
 
-	
+	TSharedPtr<class IOnlineSession, ESPMode::ThreadSafe> OnlineSessionInterface;
 };
 
