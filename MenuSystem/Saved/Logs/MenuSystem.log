@@ -717,3 +717,7 @@ LogConfig: CVar [[QualityLevelMapping:high]] deferred - dummy variable created
 [2022.12.22-09.21.29:527][763]LogHotReload: Starting Hot-Reload from IDE
 [2022.12.22-09.21.29:894][763]Display: HotReload took  0.4s.
 [2022.12.22-09.21.29:894][763]Display: Reload/Re-instancing Complete: 1 package changed, 2 classes unchanged, 2 functions remapped
+[2022.12.22-09.43.32:290][704]LogHotReload: New module detected: UnrealEditor-MenuSystem-0002.dll
+[2022.12.22-09.43.33:972][710]LogHotReload: Starting Hot-Reload from IDE
+[2022.12.22-09.43.34:262][710]Display: HotReload took  0.3s.
+[2022.12.22-09.43.34:262][710]Display: Reload/Re-instancing Complete: 1 package changed, 2 classes unchanged, 2 functions remapped
