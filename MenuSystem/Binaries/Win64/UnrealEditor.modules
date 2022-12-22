@@ -2,6 +2,6 @@
 	"BuildId": "19505902",
 	"Modules": 
 	{
-		"MenuSystem": "UnrealEditor-MenuSystem-0002.dll"
+		"MenuSystem": "UnrealEditor-MenuSystem.dll"
 	}
 }
