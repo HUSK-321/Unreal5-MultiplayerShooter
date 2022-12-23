@@ -862,3 +862,8 @@ Script Stack (0 frames):
 [2022.12.23-04.38.27:506][465]LogHotReload: Starting Hot-Reload from IDE
 [2022.12.23-04.38.27:739][465]Display: HotReload took  0.2s.
 [2022.12.23-04.38.27:739][465]Display: Reload/Re-instancing Complete: 1 package changed, 2 classes unchanged, 2 functions remapped
+[2022.12.23-05.16.55:289][346]LogHotReload: New module detected: UnrealEditor-MenuSystem-0005.dll
+[2022.12.23-05.16.56:906][352]LogHotReload: Starting Hot-Reload from IDE
+[2022.12.23-05.16.57:365][352]Display: HotReload took  0.5s.
+[2022.12.23-05.16.57:365][352]Display: Reload/Re-instancing Complete: 1 package changed, 2 classes unchanged, 2 functions remapped
+[2022.12.23-05.32.55:411][211]LogDerivedDataCache: C:/Users/husk3/AppData/Local/UnrealEngine/Common/DerivedDataCache: Maintenance finished in +00:00:00.101 and deleted 0 file(s) with total size 0 MiB.
