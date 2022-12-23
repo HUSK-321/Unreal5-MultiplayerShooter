@@ -2,6 +2,8 @@
 
 
 #include "MultiplayerSessionsSubsystem.h"
+
+#include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
 #include "Microsoft/AllowMicrosoftPlatformTypes.h"
 
@@ -13,7 +15,7 @@ UMultiplayerSessionsSubsystem::UMultiplayerSessionsSubsystem()
 	DestroySessionCompleteDelegate(FOnDestroySessionCompleteDelegate::CreateUObject(this, &ThisClass::OnDestroySessionComplete)),
 	StartSessionCompleteDelegate(FOnStartSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnStartSessionComplete))
 {
-	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	IOnlineSubsystem* OnlineSubsystem{ IOnlineSubsystem::Get() };
 	if(OnlineSubsystem == nullptr)	return;
 
 	SessionInterface = OnlineSubsystem->GetSessionInterface();
@@ -21,6 +23,29 @@ UMultiplayerSessionsSubsystem::UMultiplayerSessionsSubsystem()
 
 void UMultiplayerSessionsSubsystem::CreateSession(int32 NumPublicConnections, FString MatchType)
 {
+	if(!SessionInterface.IsValid())	return;
+
+	auto CurExistingSession{ SessionInterface->GetNamedSession(NAME_GameSession) };
+	if(CurExistingSession == nullptr)	return;
+
+	SessionInterface->DestroySession(NAME_GameSession);
+
+	CreateSessionCompleteDelegateHandle = SessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
+
+	LastSessinoSettings = MakeShareable(new FOnlineSessionSettings());
+	LastSessinoSettings->bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
+	LastSessinoSettings->NumPublicConnections = NumPublicConnections;
+	LastSessinoSettings->bAllowJoinInProgress = true;
+	LastSessinoSettings->bAllowJoinViaPresence = true;
+	LastSessinoSettings->bShouldAdvertise = true;
+	LastSessinoSettings->bUsesPresence = true;
+	LastSessinoSettings->Set(FName("MatchType"), MatchType, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+
+	const TObjectPtr<ULocalPlayer> LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
+	if(SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *LastSessinoSettings))
+	{
+		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
+	}
 }
 
 void UMultiplayerSessionsSubsystem::FindSession(int32 MaxSearchResults)

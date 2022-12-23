@@ -48,6 +48,8 @@ private:
 	
 	IOnlineSessionPtr SessionInterface;
 
+	TSharedPtr<FOnlineSessionSettings> LastSessinoSettings;
+
 	/** To add to the online session interface delegate list
 	 *  Will bind our MultiplayerSessionsSubsystem internal callbacks to these
 	 */
