@@ -25,6 +25,10 @@ protected:
 
 	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
+	/** Callback functions for createsession */
+	UFUNCTION()
+	virtual void OnCreateSession(bool bWasSuccessful);
+
 private:
 
 	UPROPERTY(meta = (BindWidget))

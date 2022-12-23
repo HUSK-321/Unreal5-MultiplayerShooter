@@ -10,6 +10,9 @@
 /**
  * 
  */
+ 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMultiplayerOnCreateSessionComplete, bool, bWasSuccessful);
+ 
 UCLASS()
 class MULTIPLAYERSSESSION_API UMultiplayerSessionsSubsystem : public UGameInstanceSubsystem
 {
@@ -29,6 +32,9 @@ public:
 	void DestroySession();
 
 	void StartSession();
+
+	/** Callback delegate for menu system */
+	FMultiplayerOnCreateSessionComplete MultiplayerOnCreateSessionComplete;
 	
 	
 protected:
