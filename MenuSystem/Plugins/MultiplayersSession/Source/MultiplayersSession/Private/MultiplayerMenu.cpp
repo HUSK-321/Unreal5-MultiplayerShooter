@@ -88,6 +88,7 @@ void UMultiplayerMenu::OnCreateSession(bool bWasSuccessful)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, FString(TEXT("Session Created Failed")));
 		}
+		HostButton->SetIsEnabled(true);
 	}
 }
 
@@ -103,6 +104,11 @@ void UMultiplayerMenu::OnFindSession(const TArray<FOnlineSessionSearchResult>& S
 
 		MultiplayerSessionsSubsystem->JoinSession(Result);
 		return;
+	}
+
+	if(!bWasSuccessful || SessionResults.Num() == 0)
+	{
+		JoinButton->SetIsEnabled(true);
 	}
 }
 
@@ -125,6 +131,11 @@ void UMultiplayerMenu::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 			PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 		}
 	}
+
+	if(Result != EOnJoinSessionCompleteResult::Success)
+	{
+		JoinButton->SetIsEnabled(true);
+	}
 }
 
 void UMultiplayerMenu::OnDestroySession(bool bWasSuccessful)
@@ -137,12 +148,16 @@ void UMultiplayerMenu::OnStartSession(bool bWasSuccessful)
 
 void UMultiplayerMenu::HostButtonClicked()
 {
+	HostButton->SetIsEnabled(false);
+	
 	if(MultiplayerSessionsSubsystem == nullptr)	return;
 	MultiplayerSessionsSubsystem->CreateSession(NumPublicConnections, MatchType);
 }
 
 void UMultiplayerMenu::JoinButtonClicked()
 {
+	JoinButton->SetIsEnabled(false);
+	
 	if(MultiplayerSessionsSubsystem == nullptr)	return;
 	MultiplayerSessionsSubsystem->FindSession(10000);
 }
