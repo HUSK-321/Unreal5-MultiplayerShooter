@@ -4,13 +4,15 @@
 #include "BlasterCharacter.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 ABlasterCharacter::ABlasterCharacter()
 	:
 	CameraBoom(CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"))),
-	FollowCamera(CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera")))
+	FollowCamera(CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"))),
+	OverheadWidget(CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget")))
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -23,6 +25,8 @@ ABlasterCharacter::ABlasterCharacter()
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	OverheadWidget->SetupAttachment(GetRootComponent());
 }
 
 void ABlasterCharacter::BeginPlay()
