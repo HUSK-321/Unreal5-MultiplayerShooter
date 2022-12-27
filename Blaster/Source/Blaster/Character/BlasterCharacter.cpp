@@ -37,5 +37,43 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("MoveForward", this, &ThisClass::Moveforward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ThisClass::MoveRight);
+	PlayerInputComponent->BindAxis("Lookup", this, &ThisClass::LookUp);
+	PlayerInputComponent->BindAxis("Turn", this, &ThisClass::Turn);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
+
+void ABlasterCharacter::Moveforward(float Value)
+{
+	if(Controller == nullptr || Value == 0.f)	return;
+
+	const FRotator YawRotation{ 0.f, Controller->GetControlRotation().Yaw, 0.f };
+	const FVector Direction{ FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) };
+
+	AddMovementInput(Direction, Value);
+}
+
+void ABlasterCharacter::MoveRight(float Value)
+{
+	if(Controller == nullptr || Value == 0.f)	return;
+
+	const FRotator YawRotation{ 0.f, Controller->GetControlRotation().Yaw, 0.f };
+	const FVector Direction{ FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) };
+
+	AddMovementInput(Direction, Value);
+}
+
+void ABlasterCharacter::Turn(float Value)
+{
+	AddControllerYawInput(Value);
+}
+
+void ABlasterCharacter::LookUp(float Value)
+{
+	AddControllerPitchInput(Value);
+}
+
+
 
