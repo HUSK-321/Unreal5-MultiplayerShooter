@@ -6,11 +6,12 @@
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AWeapon::AWeapon()
 	:
 	WeaponMesh(CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"))),
-	AreaShpere(CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"))),
+	AreaSphere(CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"))),
 	PickupWidget(CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget")))
 	
 {
@@ -22,9 +23,9 @@ AWeapon::AWeapon()
 	WeaponMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	AreaShpere->SetupAttachment(GetRootComponent());
-	AreaShpere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	AreaShpere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AreaSphere->SetupAttachment(GetRootComponent());
+	AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	PickupWidget->SetupAttachment(GetRootComponent());
 }
@@ -40,13 +41,19 @@ void AWeapon::BeginPlay()
 
 	if(HasAuthority())
 	{
-		AreaShpere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		AreaShpere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		AreaSphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-		AreaShpere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
-		AreaShpere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
+		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);
 	}
-	
+}
+
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AWeapon, WeaponState);
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -73,6 +80,33 @@ void AWeapon::ShowPickupWidget(bool bShowWidget)
 
 	PickupWidget->SetVisibility(bShowWidget);
 }
+
+void AWeapon::SetWeaponState(EWeaponState State)
+{
+	WeaponState = State;
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	}
+}
+
+void AWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		break;
+
+	case EWeaponState::EWS_Dropped:
+
+		break;
+	}
+}
+
 
 
 
