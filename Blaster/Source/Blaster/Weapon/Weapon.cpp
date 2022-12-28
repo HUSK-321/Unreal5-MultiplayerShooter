@@ -2,18 +2,21 @@
 
 
 #include "Weapon.h"
+
+#include "Blaster/Character/BlasterCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 
 AWeapon::AWeapon()
 	:
 	WeaponMesh(CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"))),
-	AreaShpere(CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere")))
+	AreaShpere(CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"))),
+	PickupWidget(CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget")))
 	
 {
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
-	WeaponMesh->SetupAttachment(GetRootComponent());
 	SetRootComponent(WeaponMesh);
 	WeaponMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 	WeaponMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
@@ -22,17 +25,37 @@ AWeapon::AWeapon()
 	AreaShpere->SetupAttachment(GetRootComponent());
 	AreaShpere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	AreaShpere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PickupWidget->SetupAttachment(GetRootComponent());
 }
 
 void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if(PickupWidget)
+	{
+		PickupWidget->SetVisibility(false);
+	}
+
 	if(HasAuthority())
 	{
 		AreaShpere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		AreaShpere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+		AreaShpere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
 	}
 	
+}
+
+void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(PickupWidget == nullptr)	return;
+	
+	auto BlasterCharacter{ Cast<ABlasterCharacter>(OtherActor) };
+	if(BlasterCharacter == nullptr)	return;
+
+	PickupWidget->SetVisibility(true);
 }
 
