@@ -44,18 +44,35 @@ void AWeapon::BeginPlay()
 		AreaShpere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 		AreaShpere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
+		AreaShpere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);
 	}
 	
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+							  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(PickupWidget == nullptr)	return;
-	
 	auto BlasterCharacter{ Cast<ABlasterCharacter>(OtherActor) };
 	if(BlasterCharacter == nullptr)	return;
 
-	PickupWidget->SetVisibility(true);
+	BlasterCharacter->SetOverlappingWeapon(this);
 }
+
+void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+								 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	auto BlasterCharacter{ Cast<ABlasterCharacter>(OtherActor) };
+	if(BlasterCharacter == nullptr)	return;
+
+	BlasterCharacter->SetOverlappingWeapon(nullptr);
+}
+
+void AWeapon::ShowPickupWidget(bool bShowWidget)
+{
+	if(PickupWidget == nullptr)	return;
+
+	PickupWidget->SetVisibility(bShowWidget);
+}
+
+
 

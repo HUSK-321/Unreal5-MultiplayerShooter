@@ -35,13 +35,13 @@ protected:
 								int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	virtual void OnSphereOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-								int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
-	TObjectPtr<class USkeletalMeshComponent> WeaponMesh;
+	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	TObjectPtr<class USphereComponent> AreaShpere;
@@ -54,5 +54,5 @@ private:
 
 public:
 	
-
+	void ShowPickupWidget(bool bShowWidget);
 };
