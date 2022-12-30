@@ -30,11 +30,14 @@ protected:
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
 
+	UFUNCTION()
+	void OnRep_EquippedWeapon();
+
 private:
 	
 	TObjectPtr<ABlasterCharacter> Character;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<class AWeapon> EquippedWeapon;
 
 	UPROPERTY(Replicated)
