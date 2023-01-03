@@ -62,4 +62,6 @@ public:
 	void OnRep_WeaponState();
 
 	void SetWeaponState(EWeaponState State);
+
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
 };

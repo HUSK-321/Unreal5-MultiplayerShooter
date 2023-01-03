@@ -36,6 +36,8 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bWeaponEquipped;
+
+	TObjectPtr<class AWeapon> EquippedWeapon;
 	
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsCrouched;
@@ -60,4 +62,14 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float AO_Pitch;
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	FTransform LeftHandTransform;
+
+	void SetPropertyFromCharacter();
+	void CalculateYawOffset(float DeltaTime);
+	void CalculateLean(float DeltaTime);
+	void SetAimOffsetProperty();
+	void SetLeftHandSocket();
+	
 };

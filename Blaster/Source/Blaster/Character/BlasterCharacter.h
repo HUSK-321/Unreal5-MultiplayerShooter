@@ -84,4 +84,5 @@ public:
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
+	AWeapon* GetEquippedWeapon();
 };
