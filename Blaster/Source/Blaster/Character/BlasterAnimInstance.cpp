@@ -47,6 +47,7 @@ void UBlasterAnimInstance::SetPropertyFromCharacter()
 	EquippedWeapon = BlasterCharacter->GetEquippedWeapon();
 	bIsCrouched = BlasterCharacter->bIsCrouched;
 	bAiming = BlasterCharacter->IsAiming();
+	TurningInPlace = BlasterCharacter->GetTurningInPlace();
 }
 
 void UBlasterAnimInstance::CalculateYawOffset(float DeltaTime)
