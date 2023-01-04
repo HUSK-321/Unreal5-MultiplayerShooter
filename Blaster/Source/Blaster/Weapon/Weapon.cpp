@@ -6,6 +6,7 @@
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Net/UnrealNetwork.h"
 
 AWeapon::AWeapon()
@@ -91,6 +92,13 @@ void AWeapon::SetWeaponState(EWeaponState State)
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		break;
 	}
+}
+
+void AWeapon::Fire()
+{
+	if(FireAnimation == nullptr)	return;
+
+	WeaponMesh->PlayAnimation(FireAnimation, false);
 }
 
 void AWeapon::OnRep_WeaponState()

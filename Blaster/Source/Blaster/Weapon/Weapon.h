@@ -54,6 +54,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	TObjectPtr<class UWidgetComponent> PickupWidget;
 
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	TObjectPtr<class UAnimationAsset> FireAnimation;
+
 public:
 	
 	void ShowPickupWidget(bool bShowWidget);
@@ -62,6 +65,8 @@ public:
 	void OnRep_WeaponState();
 
 	void SetWeaponState(EWeaponState State);
+
+	void Fire();
 
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
 };
