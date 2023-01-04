@@ -88,3 +88,11 @@ void UCombatComponent::OnRep_EquippedWeapon()
 	Character->bUseControllerRotationYaw = true;
 }
 
+void UCombatComponent::FireButtonPressed(bool bPressed)
+{
+	bFireButtonPressed = bPressed;
+
+	if(Character == nullptr || !bFireButtonPressed)	return;
+	Character->PlayFireMontage(bAiming);
+}
+

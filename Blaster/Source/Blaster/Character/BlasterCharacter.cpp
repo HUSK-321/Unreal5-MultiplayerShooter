@@ -83,6 +83,8 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ThisClass::CrouchButtonPressed);
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &ThisClass::AimButtonPressed);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &ThisClass::AimButtonReleased);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ThisClass::FireButtonPressed);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ThisClass::FireButtonReleased);
 }
 
 void ABlasterCharacter::PostInitializeComponents()
@@ -168,6 +170,20 @@ void ABlasterCharacter::AimButtonReleased()
 	if(Combat == nullptr)	return;
 
 	Combat->SetAiming(false);
+}
+
+void ABlasterCharacter::FireButtonPressed()
+{
+	if(Combat == nullptr)	return;
+
+	Combat->FireButtonPressed(true);
+}
+
+void ABlasterCharacter::FireButtonReleased()
+{
+	if(Combat == nullptr)	return;
+
+	Combat->FireButtonPressed(false);
 }
 
 void ABlasterCharacter::AimOffset(float DeltaTime)
@@ -281,6 +297,18 @@ bool ABlasterCharacter::IsWeaponEquipped()
 bool ABlasterCharacter::IsAiming()
 {
 	return (Combat && Combat->bAiming); 
+}
+
+void ABlasterCharacter::PlayFireMontage(bool bAiming)
+{
+	if(Combat == nullptr || Combat->EquippedWeapon == nullptr || FireWeaponMontage == nullptr)	return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance == nullptr)	return;
+
+	AnimInstance->Montage_Play(FireWeaponMontage);
+	FName SectionName = (bAiming) ? FName("RifleAim") : FName("RifleHip");
+	AnimInstance->Montage_JumpToSection(SectionName);
 }
 
 AWeapon* ABlasterCharacter::GetEquippedWeapon()

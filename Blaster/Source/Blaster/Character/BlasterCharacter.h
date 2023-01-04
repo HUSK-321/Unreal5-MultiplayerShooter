@@ -44,6 +44,10 @@ protected:
 
 	void AimButtonReleased();
 
+	void FireButtonPressed();
+
+	void FireButtonReleased();
+
 	void AimOffset(float DeltaTime);
 
 	virtual void Jump() override;
@@ -80,6 +84,9 @@ private:
 
 	ETurningInPlace TurningInPlace;
 	void TurnInPlace(float DeltaTime);
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TObjectPtr<class UAnimMontage> FireWeaponMontage;
 	
 public:	
 
@@ -88,6 +95,8 @@ public:
 	bool IsWeaponEquipped();
 
 	bool IsAiming();
+
+	void PlayFireMontage(bool bAiming);
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
