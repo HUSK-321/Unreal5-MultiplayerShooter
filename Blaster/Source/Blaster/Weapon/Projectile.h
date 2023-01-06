@@ -26,4 +26,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UBoxComponent>	CollisionBox;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UProjectileMovementComponent> ProjectileMovementComponent;
+
 };

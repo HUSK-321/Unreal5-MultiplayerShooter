@@ -2,12 +2,13 @@
 
 
 #include "Projectile.h"
-
 #include "Components/BoxComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 AProjectile::AProjectile()
 	:
-	CollisionBox(CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox")))
+	CollisionBox(CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"))),
+	ProjectileMovementComponent(CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent"))
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -18,7 +19,9 @@ AProjectile::AProjectile()
 	CollisionBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	CollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
-
+	
+	ProjectileMovementComponent->bRotationFollowsVelocity = true;
+	
 }
 
 void AProjectile::BeginPlay()
