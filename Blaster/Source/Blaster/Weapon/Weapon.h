@@ -57,6 +57,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	TObjectPtr<class UAnimationAsset> FireAnimation;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ACasing> CasingClass;
+
 public:
 	
 	void ShowPickupWidget(bool bShowWidget);
