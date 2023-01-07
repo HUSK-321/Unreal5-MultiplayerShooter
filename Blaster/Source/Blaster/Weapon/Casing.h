@@ -17,10 +17,19 @@ public:
 protected:
 	
 	virtual void BeginPlay() override;
+	
+	UFUNCTION()
+	virtual void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpluse, const FHitResult& Hit);
 
 private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> CasingMesh;
+
+	UPROPERTY(EditAnywhere)
+	float ShellEjectionImpluse;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class USoundCue> ShellSound;
 
 };
