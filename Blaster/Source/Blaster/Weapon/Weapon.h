@@ -44,6 +44,13 @@ public:
 	UPROPERTY(EditAnywhere, Category = Crosshairs)
 	TObjectPtr<UTexture2D> CrosshairsBottom;
 
+	/** Zoom FOV while aiming */
+	UPROPERTY(EditAnywhere)
+	float ZoomFOV = 30.f;
+
+	UPROPERTY(EditAnywhere)
+	float ZoomInterpSpeed = 20.f;
+
 protected:
 	
 	virtual void BeginPlay() override;
@@ -88,4 +95,8 @@ public:
 	virtual void Fire(const FVector& HitTarget);
 
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
+
+	FORCEINLINE float GetZoomedFOV() const { return ZoomFOV; }
+
+	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
 };

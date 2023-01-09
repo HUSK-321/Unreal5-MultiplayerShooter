@@ -73,6 +73,20 @@ private:
 	float CrosshairInAirFactor;
 
 	FVector HitTarget;
+
+	/** Aiming and FOV */
+	float DefaultFOV;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ZoomFOV{ 30.f };
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ZoomInterpSpeed{ 20.f };
+
+	float CurrentFOV;
+
+	void InterpFOV(float DeltaTime);
+	
 	
 public:
 	
