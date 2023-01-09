@@ -43,9 +43,15 @@ protected:
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
+	void SetHUDCrosshairs(float DeltaTime);
+
 private:
 	
 	TObjectPtr<ABlasterCharacter> Character;
+
+	TObjectPtr<class ABlasterPlayerController> Controller;
+
+	TObjectPtr<class ABlasterHUD> HUD;
 
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	TObjectPtr<class AWeapon> EquippedWeapon;
