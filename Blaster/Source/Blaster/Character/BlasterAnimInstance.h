@@ -70,10 +70,15 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	ETurningInPlace TurningInPlace;
 
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	FRotator RightHandRotation;
+
 	void SetPropertyFromCharacter();
 	void CalculateYawOffset(float DeltaTime);
 	void CalculateLean(float DeltaTime);
 	void SetAimOffsetProperty();
 	void SetLeftHandSocket();
-	
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	bool bLocallyControlled;
 };
