@@ -89,6 +89,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
 
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	void PlayHitReactMontage();
+	
 	void HideCameraWhenCharacterIsClose();
 
 	UPROPERTY(EditAnywhere)
@@ -103,6 +108,10 @@ public:
 	bool IsAiming();
 
 	void PlayFireMontage(bool bAiming);
+
+	
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastHit();
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }

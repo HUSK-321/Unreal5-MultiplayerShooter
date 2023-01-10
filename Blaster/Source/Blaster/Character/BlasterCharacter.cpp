@@ -5,6 +5,7 @@
 
 #include "Blaster/BlasterComponents/CombatComponent.h"
 #include "Blaster/Weapon/Weapon.h"
+#include "Blaster/Blaster.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
@@ -42,6 +43,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 0.f, 850.f);
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionObjectType(ECC_SkeletalMesh);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 
@@ -267,6 +269,11 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
+void ABlasterCharacter::MulticastHit_Implementation()
+{
+	PlayHitReactMontage();
+}
+
 void ABlasterCharacter::HideCameraWhenCharacterIsClose()
 {
 	if(!IsLocallyControlled())	return;
@@ -334,6 +341,18 @@ void ABlasterCharacter::PlayFireMontage(bool bAiming)
 
 	AnimInstance->Montage_Play(FireWeaponMontage);
 	FName SectionName = (bAiming) ? FName("RifleAim") : FName("RifleHip");
+	AnimInstance->Montage_JumpToSection(SectionName);
+}
+
+void ABlasterCharacter::PlayHitReactMontage()
+{
+	if(Combat == nullptr || Combat->EquippedWeapon == nullptr || HitReactMontage == nullptr)	return;
+	
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance == nullptr)	return;
+
+	AnimInstance->Montage_Play(HitReactMontage);
+	FName SectionName("FromFront");
 	AnimInstance->Montage_JumpToSection(SectionName);
 }
 
