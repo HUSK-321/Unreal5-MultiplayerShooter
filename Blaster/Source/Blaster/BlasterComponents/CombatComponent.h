@@ -33,6 +33,8 @@ protected:
 
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
+	
+	void Fire();
 
 	void FireButtonPressed(bool bPressed);
 
@@ -94,7 +96,17 @@ private:
 	float CurrentFOV;
 
 	void InterpFOV(float DeltaTime);
-	
+
+	/** For automatic fire */
+
+	FTimerHandle FireTimer;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	bool bCanFire;
+
+	void StartFireTimer();
+
+	void FireTimerFinished();
 	
 public:
 	

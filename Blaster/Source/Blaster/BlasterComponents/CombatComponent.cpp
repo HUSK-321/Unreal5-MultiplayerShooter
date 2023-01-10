@@ -11,10 +11,11 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "TimerManager.h"
 
 UCombatComponent::UCombatComponent()
 	:
-	BaseWalkSpeed(600.f), AimWalkSpeed(450.f)
+	BaseWalkSpeed(600.f), AimWalkSpeed(450.f), bCanFire(true)
 {
 	PrimaryComponentTick.bCanEverTick = true;
 }
@@ -153,6 +154,14 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	Character->bUseControllerRotationYaw = true;
 }
 
+void UCombatComponent::OnRep_EquippedWeapon()
+{
+	if(EquippedWeapon == nullptr || Character == nullptr)	return;
+	
+	Character->GetCharacterMovement()->bOrientRotationToMovement = false;
+	Character->bUseControllerRotationYaw = true;
+}
+
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
 	bAiming = bIsAiming;
@@ -174,27 +183,41 @@ void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
 	}	
 }
 
-void UCombatComponent::OnRep_EquippedWeapon()
-{
-	if(EquippedWeapon == nullptr || Character == nullptr)	return;
-	
-	Character->GetCharacterMovement()->bOrientRotationToMovement = false;
-	Character->bUseControllerRotationYaw = true;
-}
-
 void UCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
 	if(!bFireButtonPressed)	return;
 	
-	FHitResult HitResult;
-	TraceUnderCrosshairs(HitResult);
-	ServerFire(HitResult.ImpactPoint);
+	Fire();
+}
 
+void UCombatComponent::Fire()
+{
+	if(!bCanFire)	return;
+
+	ServerFire(HitTarget);
 	if(EquippedWeapon)
 	{
+		bCanFire = false;
 		CrosshairShootingFactor = 0.75f;
 	}
+	StartFireTimer();
+}
+
+void UCombatComponent::StartFireTimer()
+{
+	if(EquippedWeapon == nullptr || Character == nullptr)	return;
+
+	Character->GetWorldTimerManager().SetTimer(FireTimer, this, &UCombatComponent::FireTimerFinished, EquippedWeapon->FireDelay);
+}
+
+void UCombatComponent::FireTimerFinished()
+{
+	if(EquippedWeapon == nullptr)	return;
+	bCanFire = true;
+	if(!bFireButtonPressed || !EquippedWeapon->bAutomatic) return;
+
+	Fire();
 }
 
 void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
