@@ -47,6 +47,7 @@ void UBlasterAnimInstance::SetPropertyFromCharacter()
 	EquippedWeapon = BlasterCharacter->GetEquippedWeapon();
 	bIsCrouched = BlasterCharacter->bIsCrouched;
 	bAiming = BlasterCharacter->IsAiming();
+	bRotateRootBone = BlasterCharacter->ShouldRotateRootBone();
 	TurningInPlace = BlasterCharacter->GetTurningInPlace();
 }
 

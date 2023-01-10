@@ -23,6 +23,8 @@ public:
 
 	virtual void PostInitializeComponents() override;
 
+	virtual void OnRep_ReplicatedMovement() override;
+
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -48,8 +50,14 @@ protected:
 	void FireButtonPressed();
 
 	void FireButtonReleased();
+	
+	void CalculateAO_Pitch();
+	
+	float ClaculateSpeed();
 
 	void AimOffset(float DeltaTime);
+
+	void SimProxiesTurn();
 
 	virtual void Jump() override;
 
@@ -98,6 +106,18 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float CameraThreshold;
+
+	bool bRotateRootBone;
+
+	float TurnThreshold;
+
+	FRotator ProxyRotationLastFrame;
+
+	FRotator ProxyRotation;
+
+	float ProxyYaw;
+
+	float TimeSinceLastMovementReplication;
 	
 public:	
 
@@ -117,6 +137,7 @@ public:
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return  FollowCamera; }
+	FORCEINLINE bool ShouldRotateRootBone() const { return  bRotateRootBone; }
 	AWeapon* GetEquippedWeapon();
 
 	FVector GetHitTarget() const;
