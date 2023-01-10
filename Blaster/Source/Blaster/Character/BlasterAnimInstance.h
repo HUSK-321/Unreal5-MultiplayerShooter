@@ -77,7 +77,7 @@ private:
 	void CalculateYawOffset(float DeltaTime);
 	void CalculateLean(float DeltaTime);
 	void SetAimOffsetProperty();
-	void SetLeftHandSocket();
+	void SetLeftHandSocket(float DeltaTime);
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bLocallyControlled;

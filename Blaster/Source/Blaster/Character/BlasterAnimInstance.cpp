@@ -32,7 +32,7 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	SetAimOffsetProperty();
 
-	SetLeftHandSocket();
+	SetLeftHandSocket(DeltaTime);
 }
 
 void UBlasterAnimInstance::SetPropertyFromCharacter()
@@ -75,7 +75,7 @@ void UBlasterAnimInstance::SetAimOffsetProperty()
 	AO_Pitch = BlasterCharacter ->GetAOPitch();
 }
 
-void UBlasterAnimInstance::SetLeftHandSocket()
+void UBlasterAnimInstance::SetLeftHandSocket(float DeltaTime)
 {
 	if(!bWeaponEquipped || EquippedWeapon == nullptr || EquippedWeapon->GetWeaponMesh() == nullptr || BlasterCharacter->GetMesh() == nullptr) return;
 	
@@ -90,7 +90,8 @@ void UBlasterAnimInstance::SetLeftHandSocket()
 	{
 		bLocallyControlled = true;
 		FTransform RightHandTransform = EquippedWeapon->GetWeaponMesh()->GetSocketTransform(FName("Hand_R"), ERelativeTransformSpace::RTS_World);
-		RightHandRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(),
+		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(RightHandTransform.GetLocation(),
 																  RightHandTransform.GetLocation() + (RightHandTransform.GetLocation() - BlasterCharacter->GetHitTarget()));
+		RightHandRotation = FMath::RInterpTo(RightHandRotation, LookAtRotation, DeltaTime, 30.f);
 	}
 }

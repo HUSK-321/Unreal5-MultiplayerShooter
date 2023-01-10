@@ -5,7 +5,6 @@
 
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
-#include "Blaster//HUD/BlasterHUD.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -67,8 +66,6 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 	if(Controller == nullptr)	return;
 	HUD = HUD == nullptr ? Cast<ABlasterHUD>(Controller->GetHUD()) : HUD;
 	if(HUD == nullptr)	return;
-
-	FHUDPackage HUDPackage;
 	
 	if(EquippedWeapon)
 	{
@@ -219,9 +216,13 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		FVector End{ Start + CrosshairWorldDirection * 8000.f };
 
 		GetWorld()->LineTraceSingleByChannel(TraceHitResult, Start, End, ECollisionChannel::ECC_Visibility);
-		if(!TraceHitResult.bBlockingHit)
+		if(TraceHitResult.GetActor() && TraceHitResult.GetActor()->Implements<UInteractWithCrosshairs>())
 		{
-			TraceHitResult.ImpactPoint = End;
+			HUDPackage.CrosshairColor = FLinearColor::Red;
+		}
+		else
+		{
+			HUDPackage.CrosshairColor = FLinearColor::White;
 		}
 	}
 }

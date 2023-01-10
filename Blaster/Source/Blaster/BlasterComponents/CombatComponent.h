@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Blaster//HUD/BlasterHUD.h"
 #include "CombatComponent.generated.h"
 
 
@@ -68,6 +69,9 @@ private:
 	bool bFireButtonPressed;
 
 	/** Hud and Crosshairs */
+	
+	FHUDPackage HUDPackage;
+	
 	float CrosshairVelocityFactor;
 
 	float CrosshairInAirFactor;
