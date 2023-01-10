@@ -88,6 +88,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
+
+	void HideCameraWhenCharacterIsClose();
+
+	UPROPERTY(EditAnywhere)
+	float CameraThreshold;
 	
 public:	
 
