@@ -21,7 +21,8 @@ ABlasterCharacter::ABlasterCharacter()
 	OverheadWidget(CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"))),
 	Combat(CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"))),
 	TurningInPlace(ETurningInPlace::ETIP_NotTurning),
-	CameraThreshold(200.f), TurnThreshold(.5f)
+	CameraThreshold(200.f), TurnThreshold(.5f),
+	MaxHealth(100.f), Health(100.f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -57,7 +58,7 @@ void ABlasterCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME_CONDITION(ABlasterCharacter, OverlappingWeapon, COND_OwnerOnly);
-	
+	DOREPLIFETIME(ABlasterCharacter, Health);
 }
 
 void ABlasterCharacter::BeginPlay()
@@ -356,6 +357,11 @@ void ABlasterCharacter::HideCameraWhenCharacterIsClose()
 			Combat->EquippedWeapon->GetWeaponMesh()->bOwnerNoSee = false;
 		}
 	}
+}
+
+void ABlasterCharacter::OnRep_Health()
+{
+	
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon)

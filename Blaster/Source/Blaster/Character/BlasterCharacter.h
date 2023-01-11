@@ -118,6 +118,15 @@ private:
 	float ProxyYaw;
 
 	float TimeSinceLastMovementReplication;
+
+	UPROPERTY(EditAnywhere, Category = "Player Stats")
+	float MaxHealth;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "Player Stats")
+	float Health;
+
+	UFUNCTION()
+	void OnRep_Health();
 	
 public:	
 
