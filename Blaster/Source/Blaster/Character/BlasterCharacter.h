@@ -127,6 +127,8 @@ private:
 
 	UFUNCTION()
 	void OnRep_Health();
+
+	TObjectPtr<class ABlasterPlayerController> BlasterPlayerController;
 	
 public:	
 
