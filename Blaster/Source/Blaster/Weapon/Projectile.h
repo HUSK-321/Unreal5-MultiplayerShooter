@@ -44,4 +44,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USoundCue> ImpactSound;
+
+protected:
+	
+	UPROPERTY(EditAnywhere)
+	float Damage;
 };

@@ -28,7 +28,8 @@ public:
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
+	void UpdateHUDHealth();
+
 	virtual void BeginPlay() override;
 
 	void Moveforward(float Value);
@@ -60,6 +61,9 @@ protected:
 	void SimProxiesTurn();
 
 	virtual void Jump() override;
+
+	UFUNCTION()
+	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 
 private:
 
@@ -139,10 +143,6 @@ public:
 	bool IsAiming();
 
 	void PlayFireMontage(bool bAiming);
-
-	
-	UFUNCTION(NetMulticast, Unreliable)
-	void MulticastHit();
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }

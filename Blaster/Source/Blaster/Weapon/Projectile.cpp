@@ -15,7 +15,8 @@
 AProjectile::AProjectile()
 	:
 	CollisionBox(CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"))),
-	ProjectileMovementComponent(CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent"))
+	ProjectileMovementComponent(CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent")),
+	Damage(20.f)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
@@ -29,7 +30,7 @@ AProjectile::AProjectile()
 	CollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECC_SkeletalMesh, ECollisionResponse::ECR_Block);
 	
-	ProjectileMovementComponent->bRotationFollowsVelocity = true;
+	ProjectileMovementComponent->bRotationFollowsVelocity = false;
 	
 }
 
@@ -50,12 +51,6 @@ void AProjectile::BeginPlay()
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpluse, const FHitResult& Hit)
 {
-	auto BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
-	if(BlasterCharacter)
-	{
-		BlasterCharacter->MulticastHit();
-	}
-	
 	Destroy();
 }
 
