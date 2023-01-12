@@ -22,6 +22,7 @@ ABlasterCharacter::ABlasterCharacter()
 	FollowCamera(CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"))),
 	OverheadWidget(CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"))),
 	Combat(CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"))),
+	DissolveTimeline(CreateDefaultSubobject<UTimelineComponent>(TEXT("DissolveTimelineComponent"))),
 	TurningInPlace(ETurningInPlace::ETIP_NotTurning),
 	CameraThreshold(200.f), TurnThreshold(.5f),
 	MaxHealth(100.f), Health(100.f), bElimmed(false), ElimDelay(3.f)
@@ -144,6 +145,15 @@ void ABlasterCharacter::MulticastElim_Implementation()
 {
 	bElimmed = true;
 	PlayElimMontage();
+
+	if(DissolveMaterialInstance)
+	{
+		DynamicDissolveMaterialInstance = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
+		GetMesh()->SetMaterial(0, DynamicDissolveMaterialInstance);
+		DynamicDissolveMaterialInstance->SetScalarParameterValue(TEXT("Dissolve"), 0.55f);
+		DynamicDissolveMaterialInstance->SetScalarParameterValue(TEXT("Glow"), 200.f);
+	}
+	StartDissolve();
 }
 
 void ABlasterCharacter::ElimTimerFinished()
@@ -399,6 +409,22 @@ void ABlasterCharacter::HideCameraWhenCharacterIsClose()
 			Combat->EquippedWeapon->GetWeaponMesh()->bOwnerNoSee = false;
 		}
 	}
+}
+
+void ABlasterCharacter::UpdateDissolveMaterial(float DissolveValue)
+{
+	if(DynamicDissolveMaterialInstance == nullptr)	return;
+	
+	DynamicDissolveMaterialInstance->SetScalarParameterValue(TEXT("Dissolve"), DissolveValue);
+}
+
+void ABlasterCharacter::StartDissolve()
+{
+	if(DissolveTimeline == nullptr || DissolveCurve == nullptr)	return;
+	DissolveTrack.BindDynamic(this, &ABlasterCharacter::UpdateDissolveMaterial);
+	
+	DissolveTimeline->AddInterpFloat(DissolveCurve, DissolveTrack);
+	DissolveTimeline->Play();
 }
 
 void ABlasterCharacter::OnRep_Health()
