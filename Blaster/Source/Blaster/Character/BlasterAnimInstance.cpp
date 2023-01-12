@@ -49,6 +49,7 @@ void UBlasterAnimInstance::SetPropertyFromCharacter()
 	bAiming = BlasterCharacter->IsAiming();
 	bRotateRootBone = BlasterCharacter->ShouldRotateRootBone();
 	TurningInPlace = BlasterCharacter->GetTurningInPlace();
+	bElimmed = BlasterCharacter->IsElimmed();
 }
 
 void UBlasterAnimInstance::CalculateYawOffset(float DeltaTime)

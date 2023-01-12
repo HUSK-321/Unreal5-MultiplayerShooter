@@ -25,6 +25,7 @@ public:
 
 	virtual void OnRep_ReplicatedMovement() override;
 
+	UFUNCTION(NetMulticast, Reliable)
 	void Elim();
 
 protected:
@@ -105,6 +106,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TObjectPtr<UAnimMontage> ElimMontage;
 
 	void PlayHitReactMontage();
 	
@@ -130,6 +134,8 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Health, VisibleAnywhere, Category = "Player Stats")
 	float Health;
+	
+	bool bElimmed;
 
 	UFUNCTION()
 	void OnRep_Health();
@@ -146,11 +152,14 @@ public:
 
 	void PlayFireMontage(bool bAiming);
 
+	void PlayElimMontage();
+
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return  FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return  bRotateRootBone; }
+	FORCEINLINE bool IsElimmed() const { return  bElimmed; }
 	AWeapon* GetEquippedWeapon();
 
 	FVector GetHitTarget() const;

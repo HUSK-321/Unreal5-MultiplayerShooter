@@ -24,7 +24,7 @@ ABlasterCharacter::ABlasterCharacter()
 	Combat(CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"))),
 	TurningInPlace(ETurningInPlace::ETIP_NotTurning),
 	CameraThreshold(200.f), TurnThreshold(.5f),
-	MaxHealth(100.f), Health(100.f)
+	MaxHealth(100.f), Health(100.f), bElimmed(false)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -133,11 +133,11 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 	TimeSinceLastMovementReplication = 0.f;
 }
 
-void ABlasterCharacter::Elim()
+void ABlasterCharacter::Elim_Implementation()
 {
-	
+	bElimmed = true;
+	PlayElimMontage();
 }
-
 
 void ABlasterCharacter::Moveforward(float Value)
 {
@@ -437,6 +437,15 @@ void ABlasterCharacter::PlayFireMontage(bool bAiming)
 	AnimInstance->Montage_Play(FireWeaponMontage);
 	FName SectionName = (bAiming) ? FName("RifleAim") : FName("RifleHip");
 	AnimInstance->Montage_JumpToSection(SectionName);
+}
+
+void ABlasterCharacter::PlayElimMontage()
+{
+	if(ElimMontage == nullptr)	return;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance == nullptr)	return;
+	
+	AnimInstance->Montage_Play(ElimMontage);
 }
 
 void ABlasterCharacter::PlayHitReactMontage()
