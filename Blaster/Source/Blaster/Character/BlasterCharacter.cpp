@@ -24,10 +24,11 @@ ABlasterCharacter::ABlasterCharacter()
 	Combat(CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"))),
 	TurningInPlace(ETurningInPlace::ETIP_NotTurning),
 	CameraThreshold(200.f), TurnThreshold(.5f),
-	MaxHealth(100.f), Health(100.f), bElimmed(false)
+	MaxHealth(100.f), Health(100.f), bElimmed(false), ElimDelay(3.f)
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	
 	CameraBoom->SetupAttachment(GetMesh());
 	CameraBoom->TargetArmLength = 600.f;
 	CameraBoom->bUsePawnControlRotation = true;
@@ -133,10 +134,25 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 	TimeSinceLastMovementReplication = 0.f;
 }
 
-void ABlasterCharacter::Elim_Implementation()
+void ABlasterCharacter::Elim()
+{
+	MulticastElim();
+	GetWorldTimerManager().SetTimer(ElimTimer, this, &ABlasterCharacter::ElimTimerFinished, ElimDelay);
+}
+
+void ABlasterCharacter::MulticastElim_Implementation()
 {
 	bElimmed = true;
 	PlayElimMontage();
+}
+
+void ABlasterCharacter::ElimTimerFinished()
+{
+	auto BlasterGameMode = GetWorld()->GetAuthGameMode<ABlasterGameMode>();
+	if(BlasterGameMode)
+	{
+		BlasterGameMode->RequestRespawn(this, Controller);
+	}
 }
 
 void ABlasterCharacter::Moveforward(float Value)

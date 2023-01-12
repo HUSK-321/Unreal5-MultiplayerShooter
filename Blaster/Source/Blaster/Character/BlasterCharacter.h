@@ -25,8 +25,10 @@ public:
 
 	virtual void OnRep_ReplicatedMovement() override;
 
-	UFUNCTION(NetMulticast, Reliable)
 	void Elim();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastElim();
 
 protected:
 
@@ -136,6 +138,13 @@ private:
 	float Health;
 	
 	bool bElimmed;
+
+	FTimerHandle ElimTimer;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay;
+
+	void ElimTimerFinished();
 
 	UFUNCTION()
 	void OnRep_Health();
