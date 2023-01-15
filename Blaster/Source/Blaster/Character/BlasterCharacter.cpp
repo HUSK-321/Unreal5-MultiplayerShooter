@@ -8,6 +8,7 @@
 #include "Blaster/Blaster.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/PlayerController/BlasterPlayerController.h"
+#include "Blaster/PlayerState/BlasterPlayerState.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
@@ -99,6 +100,7 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	}
 
 	HideCameraWhenCharacterIsClose();
+	PollInit();
 }
 
 void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -399,6 +401,17 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
 	auto AttackerController = Cast<ABlasterPlayerController>(InstigatorController);
 	BlasterGameMode->PlayerEliminated(this, BlasterPlayerController, AttackerController);
+}
+
+void ABlasterCharacter::PollInit()
+{
+	if(BlasterPlayerState != nullptr) return;
+
+	BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
+	if(BlasterPlayerState)
+	{
+		BlasterPlayerState->AddToScore(0.f);
+	}
 }
 
 void ABlasterCharacter::TurnInPlace(float DeltaTime)

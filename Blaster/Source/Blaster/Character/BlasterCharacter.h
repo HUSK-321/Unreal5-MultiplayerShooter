@@ -73,6 +73,9 @@ protected:
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* InstigatorController, AActor* DamageCauser);
 
+	/** Pool for any relevant classes and initialize hud */
+	void PollInit();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
@@ -185,6 +188,8 @@ private:
 	void OnRep_Health();
 
 	TObjectPtr<class ABlasterPlayerController> BlasterPlayerController;
+
+	TObjectPtr<class ABlasterPlayerState> BlasterPlayerState;
 	
 public:	
 

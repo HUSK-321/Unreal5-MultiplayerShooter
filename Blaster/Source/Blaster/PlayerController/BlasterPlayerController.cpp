@@ -36,11 +36,19 @@ bool ABlasterPlayerController::HUDIsValid()
 void ABlasterPlayerController::SetHUDHealth(float Health, float MaxHealth)
 {
 	BlasterHUD = (BlasterHUD == nullptr) ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
-
 	if(!HUDIsValid())	return;
 
 	const float HealthPercent = Health / MaxHealth;
 	BlasterHUD->CharacterOverlay->HealthBar->SetPercent(HealthPercent);
 	FString HealthText = FString::Printf(TEXT("%d / %d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));
 	BlasterHUD->CharacterOverlay->HealthText->SetText(FText::FromString(HealthText));
+}
+
+void ABlasterPlayerController::SetHUDScore(float Score)
+{
+	BlasterHUD = (BlasterHUD == nullptr) ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if(!HUDIsValid() || BlasterHUD->CharacterOverlay->ScoreAmount == nullptr)	return;
+
+	FString PlayerScore = FString::Printf(TEXT("%d"), FMath::FloorToInt(Score));
+	BlasterHUD->CharacterOverlay->ScoreAmount->SetText(FText::FromString(PlayerScore));
 }
