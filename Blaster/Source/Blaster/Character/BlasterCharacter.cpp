@@ -13,8 +13,11 @@
 #include "Components/WidgetComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Sound/SoundCue.h"
 
 ABlasterCharacter::ABlasterCharacter()
 	:
@@ -168,6 +171,15 @@ void ABlasterCharacter::MulticastElim_Implementation()
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Spawn ElimBot
+	if(ElimBotEffect == nullptr)	return;
+	FVector ElimBotSpawnPoint{ GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 200.f };
+	ElimBotComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ElimBotEffect, ElimBotSpawnPoint, GetActorRotation());
+	if(ElimBotSound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(this, ElimBotSound, GetActorLocation());
+	}
 }
 
 void ABlasterCharacter::ElimTimerFinished()
@@ -176,6 +188,15 @@ void ABlasterCharacter::ElimTimerFinished()
 	if(BlasterGameMode)
 	{
 		BlasterGameMode->RequestRespawn(this, Controller);
+	}
+}
+
+void ABlasterCharacter::Destroyed()
+{
+	Super::Destroyed();
+	if(ElimBotComponent)
+	{
+		ElimBotComponent->DestroyComponent();
 	}
 }
 

@@ -26,6 +26,8 @@ public:
 
 	virtual void OnRep_ReplicatedMovement() override;
 
+	virtual void Destroyed() override;
+
 	void Elim();
 
 	UFUNCTION(NetMulticast, Reliable)
@@ -163,7 +165,16 @@ private:
 
 	// Material instance set o the blueprint, used with the dynamic material instance
 	UPROPERTY(EditAnywhere, Category = Elim)
-	TObjectPtr<UMaterialInstance> DissolveMaterialInstance; 
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, Category = Elim)
+	TObjectPtr<UParticleSystem> ElimBotEffect;
+
+	UPROPERTY(VisibleAnywhere, Category = Elim)
+	TObjectPtr<UParticleSystemComponent> ElimBotComponent;
+
+	UPROPERTY(EditAnywhere, Category = Elim)
+	TObjectPtr<class USoundCue> ElimBotSound; 
 	
 	UFUNCTION()
 	void UpdateDissolveMaterial(float DissolveValue);
