@@ -187,8 +187,10 @@ private:
 	UFUNCTION()
 	void OnRep_Health();
 
+	UPROPERTY()
 	TObjectPtr<class ABlasterPlayerController> BlasterPlayerController;
 
+	UPROPERTY()
 	TObjectPtr<class ABlasterPlayerState> BlasterPlayerState;
 	
 public:	

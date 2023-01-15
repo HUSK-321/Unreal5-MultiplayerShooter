@@ -18,11 +18,23 @@ public:
 
 	virtual void OnRep_Score() override;
 
+	UFUNCTION()
+	virtual void OnRep_Defeats();
+
 	void AddToScore(float ScoreAmount);
+
+	void AddToDefeats(int32 DefeatsAmount);
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 private:
 
+	UPROPERTY()
 	TObjectPtr<class ABlasterCharacter> Character;
 
+	UPROPERTY()
 	TObjectPtr<class ABlasterPlayerController> Controller;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Defeats)
+	int32 Defeats;
 };
