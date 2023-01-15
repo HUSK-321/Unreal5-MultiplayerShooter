@@ -200,6 +200,8 @@ public:
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
+	FORCEINLINE float GetMaxHealth() { return MaxHealth; }
+	FORCEINLINE float GetHealth() { return Health; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return  FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return  bRotateRootBone; }
