@@ -100,6 +100,8 @@ public:
 
 	virtual void Fire(const FVector& HitTarget);
 
+	void Drop();
+
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
 
 	FORCEINLINE float GetZoomedFOV() const { return ZoomFOV; }
