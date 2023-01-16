@@ -81,7 +81,7 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 void AWeapon::SpendRound()
 {
-	--Ammo;
+	Ammo = FMath::Clamp(Ammo - 1, 0, MagCapacity);
 	SetHUDAmmo();
 }
 
@@ -195,4 +195,9 @@ void AWeapon::Drop()
 	SetOwner(nullptr);
 	BlasterOwnerController = nullptr;
 	BlasterOwnerController = nullptr;
+}
+
+bool AWeapon::IsEmpty()
+{
+	return Ammo <= 0;
 }

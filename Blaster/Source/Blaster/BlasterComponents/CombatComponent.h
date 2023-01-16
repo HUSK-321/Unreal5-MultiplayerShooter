@@ -111,6 +111,8 @@ private:
 
 	void FireTimerFinished();
 	
+	bool CanFire();
+	
 public:
 	
 	void EquipWeapon(AWeapon* WeaponToEquip);

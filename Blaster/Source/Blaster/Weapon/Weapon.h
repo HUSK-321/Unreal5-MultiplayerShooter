@@ -128,4 +128,6 @@ public:
 	FORCEINLINE float GetZoomedFOV() const { return ZoomFOV; }
 
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
+
+	bool IsEmpty();
 };
