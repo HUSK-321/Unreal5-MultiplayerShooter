@@ -96,7 +96,7 @@ void AWeapon::OnRep_Owner()
 	Super::OnRep_Owner();
 	if(Owner == nullptr)
 	{
-		BlasterOwnerController = nullptr;
+		BlasterOwnerCharacter = nullptr;
 		BlasterOwnerController = nullptr;
 	}
 	else
@@ -193,7 +193,7 @@ void AWeapon::Drop()
 	FDetachmentTransformRules DetachRules{ EDetachmentRule::KeepWorld, true };
 	WeaponMesh->DetachFromComponent(DetachRules);
 	SetOwner(nullptr);
-	BlasterOwnerController = nullptr;
+	BlasterOwnerCharacter = nullptr;
 	BlasterOwnerController = nullptr;
 }
 
