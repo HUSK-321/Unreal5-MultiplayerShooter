@@ -41,6 +41,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
 	DOREPLIFETIME(UCombatComponent, bAiming);
+	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -285,4 +286,7 @@ void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& T
 	EquippedWeapon->Fire(TraceHitTarget);
 }
 
-
+void UCombatComponent::OnRep_CarriedAmmo()
+{
+	
+}
