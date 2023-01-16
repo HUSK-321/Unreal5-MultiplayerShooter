@@ -27,6 +27,10 @@ public:
 	AWeapon();
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	virtual void OnRep_Owner() override;
+	
+	void SetHUDAmmo();
 	
 	/** Textures for weapon */
 	UPROPERTY(EditAnywhere, Category = Crosshairs)
@@ -89,6 +93,23 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ACasing> CasingClass;
 
+	UPROPERTY(EditAnywhere, ReplicatedUsing=OnRep_Ammo)
+	int32 Ammo;
+
+	UFUNCTION()
+	void OnRep_Ammo();
+
+	void SpendRound();
+	
+	UPROPERTY(EditAnywhere)
+	int32 MagCapacity;
+
+	UPROPERTY()
+	TObjectPtr<class ABlasterCharacter> BlasterOwnerCharacter;
+
+	UPROPERTY()
+	TObjectPtr<class ABlasterPlayerController> BlasterOwnerController;
+	
 public:
 	
 	void ShowPickupWidget(bool bShowWidget);
