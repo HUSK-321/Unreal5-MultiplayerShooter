@@ -5,6 +5,7 @@
 #include "BlasterCharacter.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blaster/BlasterTypes/CombatState.h"
 #include "Kismet/KismetMathLibrary.h"
 
 void UBlasterAnimInstance::NativeInitializeAnimation()
@@ -50,6 +51,7 @@ void UBlasterAnimInstance::SetPropertyFromCharacter()
 	bRotateRootBone = BlasterCharacter->ShouldRotateRootBone();
 	TurningInPlace = BlasterCharacter->GetTurningInPlace();
 	bElimmed = BlasterCharacter->IsElimmed();
+	bUseFABRIK = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
 }
 
 void UBlasterAnimInstance::CalculateYawOffset(float DeltaTime)

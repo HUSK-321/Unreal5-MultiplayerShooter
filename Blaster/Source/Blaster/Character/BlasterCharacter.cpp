@@ -603,3 +603,9 @@ void ABlasterCharacter::UpdateHUDHealth()
 		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
 	}
 }
+
+ECombatState ABlasterCharacter::GetCombatState() const
+{
+	if (Combat == nullptr) return ECombatState::ECS_MAX;
+	return Combat->CombatState;
+}
