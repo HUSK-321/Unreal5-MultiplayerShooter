@@ -19,6 +19,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
+#include "Blaster/Weapon/WeaponTypes.h"
 
 ABlasterCharacter::ABlasterCharacter()
 	:
@@ -119,6 +120,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &ThisClass::AimButtonReleased);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ThisClass::FireButtonPressed);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ThisClass::FireButtonReleased);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ABlasterCharacter::ReloadButtonPressed);
 }
 
 void ABlasterCharacter::PostInitializeComponents()
@@ -264,6 +266,13 @@ void ABlasterCharacter::CrouchButtonPressed()
 		return;
 	}
 	Crouch();
+}
+
+void ABlasterCharacter::ReloadButtonPressed()
+{
+	if(Combat == nullptr)	return;
+
+	Combat->Reload();
 }
 
 void ABlasterCharacter::AimButtonPressed()
@@ -541,6 +550,26 @@ void ABlasterCharacter::PlayElimMontage()
 	if(AnimInstance == nullptr)	return;
 	
 	AnimInstance->Montage_Play(ElimMontage);
+}
+
+void ABlasterCharacter::PlayReloadMontage()
+{
+	if(Combat == nullptr || Combat->EquippedWeapon == nullptr || ReloadMontage == nullptr)	return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance == nullptr)	return;
+
+	AnimInstance->Montage_Play(ReloadMontage);
+	FName SectionName;
+
+	switch (Combat->EquippedWeapon->GetWeaponType())
+	{
+	case EWeaponType::EWT_AssultRifle:
+		SectionName = FName("Rifle");
+		break;
+	}
+	
+	AnimInstance->Montage_JumpToSection(SectionName);
 }
 
 void ABlasterCharacter::PlayHitReactMontage()

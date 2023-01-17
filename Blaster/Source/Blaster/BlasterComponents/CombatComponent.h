@@ -49,6 +49,9 @@ protected:
 
 	void SetHUDCrosshairs(float DeltaTime);
 
+	UFUNCTION(Server, Reliable)
+	void ServerReload();
+
 private:
 
 	UPROPERTY()
@@ -130,5 +133,7 @@ private:
 public:
 	
 	void EquipWeapon(AWeapon* WeaponToEquip);
+
+	void Reload();
 		
 };

@@ -52,6 +52,8 @@ protected:
 	
 	void CrouchButtonPressed();
 
+	void ReloadButtonPressed();
+
 	void AimButtonPressed();
 
 	void AimButtonReleased();
@@ -111,6 +113,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TObjectPtr<class UAnimMontage> FireWeaponMontage;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	TObjectPtr<UAnimMontage> ReloadMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TObjectPtr<UAnimMontage> HitReactMontage;
@@ -204,6 +209,8 @@ public:
 	void PlayFireMontage(bool bAiming);
 
 	void PlayElimMontage();
+
+	void PlayReloadMontage();
 
 	FORCEINLINE float GetAOYaw() { return AO_Yaw; }
 	FORCEINLINE float GetAOPitch() { return AO_Pitch; }
