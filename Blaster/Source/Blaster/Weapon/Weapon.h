@@ -125,6 +125,8 @@ public:
 
 	virtual void Fire(const FVector& HitTarget);
 
+	void AddAmmo(int32 AmmoToAdd);
+
 	void Drop();
 
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() { return WeaponMesh; }
@@ -134,6 +136,10 @@ public:
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
 
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
+
+	FORCEINLINE int32 GetAmmo() { return Ammo; }
+
+	FORCEINLINE int32 GetMagCapacity() { return MagCapacity; }
 
 	bool IsEmpty();
 };
