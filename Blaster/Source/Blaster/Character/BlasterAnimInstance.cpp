@@ -52,6 +52,8 @@ void UBlasterAnimInstance::SetPropertyFromCharacter()
 	TurningInPlace = BlasterCharacter->GetTurningInPlace();
 	bElimmed = BlasterCharacter->IsElimmed();
 	bUseFABRIK = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+	bUseAimOffset = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
+	bTransformRightHand = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
 }
 
 void UBlasterAnimInstance::CalculateYawOffset(float DeltaTime)

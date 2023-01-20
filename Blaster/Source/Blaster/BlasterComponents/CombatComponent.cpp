@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Sound/SoundCue.h"
 #include "TimerManager.h"
 
 UCombatComponent::UCombatComponent()
@@ -172,6 +173,11 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
 
+	if(EquippedWeapon->EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, EquippedWeapon->EquipSound, Character->GetActorLocation());
+	}
+
 	Character->GetCharacterMovement()->bOrientRotationToMovement = false;
 	Character->bUseControllerRotationYaw = true;
 }
@@ -213,8 +219,8 @@ void UCombatComponent::FinishReloading()
 	if (Character->HasAuthority())
 	{
 		CombatState = ECombatState::ECS_Unoccupied;
+		UpdateAmmoValues();
 	}
-	UpdateAmmoValues();
 	if(bFireButtonPressed)
 	{
 		Fire();
@@ -267,6 +273,11 @@ void UCombatComponent::OnRep_EquippedWeapon()
 	if(HandSocket)
 	{
 		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());
+	}
+	
+	if(EquippedWeapon->EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, EquippedWeapon->EquipSound, Character->GetActorLocation());
 	}
 	
 	Character->GetCharacterMovement()->bOrientRotationToMovement = false;
