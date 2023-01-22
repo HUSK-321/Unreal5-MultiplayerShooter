@@ -30,13 +30,39 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	virtual float GetServerTime();
+
+	virtual void ReceivedPlayer() override;
+
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 
 	virtual void BeginPlay() override;
+	void CheckTimeSync(float DeltaTime);
 	bool HUDIsValid();
+
+	void SetHUDTime();
+
+	UFUNCTION(Server, Reliable)
+	void ServerRequestServerTime(float TimeOfClientRequeset);
+
+	UFUNCTION(Client, Reliable)
+	void ClientReportServerTime(float TimeOfClientRequest, float TimeServerReceivedClientRequest);
+
+	UPROPERTY(EditAnywhere, Category = Time)
+	float TimeSyncFrequency = 5.f;
+
+	float TimeSyncRunningTime = 0.0f;
 
 private:
 
 	UPROPERTY()
 	TObjectPtr<class ABlasterHUD> BlasterHUD;
+	
+	float MatchTime = 120.f;
+	
+	uint32 CountdownInt = 0;
+	
+	float ClientServerDelta = 0.f; // difference btw ser and client time
 };
