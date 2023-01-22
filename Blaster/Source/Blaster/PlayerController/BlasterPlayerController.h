@@ -26,6 +26,8 @@ public:
 
 	void SetHUDCarriedAmmo(int32 Ammo);
 
+	void SetHUDMatchCountdown(float CountdownTime);
+
 	virtual void OnPossess(APawn* InPawn) override;
 
 protected:

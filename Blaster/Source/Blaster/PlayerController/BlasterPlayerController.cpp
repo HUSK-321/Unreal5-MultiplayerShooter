@@ -79,3 +79,14 @@ void ABlasterPlayerController::SetHUDCarriedAmmo(int32 Ammo)
 	FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
 	BlasterHUD->CharacterOverlay->CarriedAmmoAmount->SetText(FText::FromString(AmmoText));
 }
+
+void ABlasterPlayerController::SetHUDMatchCountdown(float CountdownTime)
+{
+	BlasterHUD = (BlasterHUD == nullptr) ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if(!HUDIsValid() || BlasterHUD->CharacterOverlay->MatchCountdownText == nullptr)	return;
+
+	int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
+	int32 Seconds = FMath::FloorToInt(CountdownTime - Minutes * 60.f);
+	FString CountdownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);
+	BlasterHUD->CharacterOverlay->MatchCountdownText->SetText(FText::FromString(CountdownText));
+}
