@@ -10,7 +10,7 @@
 
 ABlasterGameMode::ABlasterGameMode()
 	:
-	WarmupTime(10.f), CountdownTime(0.f)
+	WarmupTime(10.f), CountdownTime(0.f), MatchTime(120.f)
 {
 	bDelayedStart = true;
 	

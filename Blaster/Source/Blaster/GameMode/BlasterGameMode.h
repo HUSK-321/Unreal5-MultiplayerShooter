@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float WarmupTime;
 
+	UPROPERTY(EditDefaultsOnly)
+	float MatchTime;
+
 	float LevelStartingTime;
 
 protected:
