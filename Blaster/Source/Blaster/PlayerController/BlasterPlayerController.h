@@ -36,6 +36,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void OnMatchStateSet(FName State);
+
 protected:
 
 	virtual void BeginPlay() override;
@@ -43,6 +47,8 @@ protected:
 	bool HUDIsValid();
 
 	void SetHUDTime();
+	
+	void PoolInit();
 
 	UFUNCTION(Server, Reliable)
 	void ServerRequestServerTime(float TimeOfClientRequeset);
@@ -65,4 +71,20 @@ private:
 	uint32 CountdownInt = 0;
 	
 	float ClientServerDelta = 0.f; // difference btw ser and client time
+
+	UPROPERTY(ReplicatedUsing = OnRep_MatchState)
+	FName MatchState;
+
+	UFUNCTION()
+	void OnRep_MatchState();
+
+	UPROPERTY()
+	TObjectPtr<class UCharacterOverlay> CharacterOverlay;
+
+	bool bInitializeCharacterOverlay = false;
+
+	float HUDHealth;
+	float HUDMaxHealth;
+	float HUDScore;
+	int32 HUDDefeats;
 };
