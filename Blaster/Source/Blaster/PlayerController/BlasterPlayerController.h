@@ -61,6 +61,8 @@ protected:
 
 	float TimeSyncRunningTime = 0.0f;
 
+	void HandleMatchHasStarted();
+
 private:
 
 	UPROPERTY()

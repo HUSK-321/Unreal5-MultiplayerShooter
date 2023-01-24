@@ -10,6 +10,7 @@
 #include "Components/TextBlock.h"
 #include "Net/UnrealNetwork.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
+#include "Blaster/HUD/Announcement.h"
 
 
 void ABlasterPlayerController::BeginPlay()
@@ -17,6 +18,10 @@ void ABlasterPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	BlasterHUD = Cast<ABlasterHUD>(GetHUD());
+	if(BlasterHUD)
+	{
+		BlasterHUD->AddAnnouncement();
+	}
 }
 
 void ABlasterPlayerController::Tick(float DeltaTime)
@@ -199,10 +204,7 @@ void ABlasterPlayerController::OnMatchStateSet(FName State)
 
 	if(MatchState == MatchState::InProgress)
 	{
-		BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
-		if(BlasterHUD == nullptr)	return;
-
-		BlasterHUD->AddCharacterOverlay();
+		HandleMatchHasStarted();
 	}
 }
 
@@ -210,9 +212,18 @@ void ABlasterPlayerController::OnRep_MatchState()
 {
 	if(MatchState == MatchState::InProgress)
 	{
-		BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
-		if(BlasterHUD == nullptr)	return;
+		HandleMatchHasStarted();
+	}
+}
 
-		BlasterHUD->AddCharacterOverlay();
+void ABlasterPlayerController::HandleMatchHasStarted()
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if(BlasterHUD == nullptr)	return;
+
+	BlasterHUD->AddCharacterOverlay();
+	if(BlasterHUD->Announcement)
+	{
+		BlasterHUD->Announcement->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

@@ -39,8 +39,14 @@ public:
 	UPROPERTY(EditAnywhere, Category="Player Stats")
 	TSubclassOf<class UUserWidget> CharacterOverlayClass;
 
+	UPROPERTY(EditAnywhere, Category="Player Stats")
+	TSubclassOf<UUserWidget> AnnouncementClass;
+
 	UPROPERTY()
 	TObjectPtr<class UCharacterOverlay> CharacterOverlay;
+
+	UPROPERTY()
+	TObjectPtr<class UAnnouncement> Announcement;
 
 protected:
 
@@ -60,4 +66,6 @@ public:
 	FORCEINLINE void SetHUDPackage (const FHUDPackage& Package) { HUDPackage = Package; }
 	
 	void AddCharacterOverlay();
+
+	void AddAnnouncement();
 };
