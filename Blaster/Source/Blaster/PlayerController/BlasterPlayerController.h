@@ -41,6 +41,10 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void OnMatchStateSet(FName State);
+	
+	void HandleMatchHasStarted();
+
+	void HandleCooldown();
 
 protected:
 
@@ -62,8 +66,6 @@ protected:
 	float TimeSyncFrequency = 5.f;
 
 	float TimeSyncRunningTime = 0.0f;
-
-	void HandleMatchHasStarted();
 
 	UFUNCTION(Server, Reliable)
 	void ServerCheckMatchState();
