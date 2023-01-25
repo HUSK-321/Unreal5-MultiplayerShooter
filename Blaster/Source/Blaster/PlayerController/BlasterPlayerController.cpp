@@ -3,6 +3,7 @@
 
 #include "BlasterPlayerController.h"
 
+#include "Blaster/BlasterComponents/CombatComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/HUD/BlasterHUD.h"
 #include "Blaster/HUD/CharacterOverlay.h"
@@ -283,6 +284,13 @@ void ABlasterPlayerController::HandleMatchHasStarted()
 
 void ABlasterPlayerController::HandleCooldown()
 {
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+	if(BlasterCharacter)
+	{
+		BlasterCharacter->bDisableGamePlay = true;
+		BlasterCharacter->GetCombat()->FireButtonPressed(false);
+	}
+	
 	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
 	if(BlasterHUD == nullptr)	return;
 

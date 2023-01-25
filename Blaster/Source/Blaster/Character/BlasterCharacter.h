@@ -34,6 +34,9 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
 
+	UPROPERTY(Replicated)
+	bool bDisableGamePlay;
+
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -78,6 +81,8 @@ protected:
 
 	/** Pool for any relevant classes and initialize hud */
 	void PollInit();
+
+	void RotateInPlace(float DeltaTime);
 
 private:
 
@@ -221,6 +226,7 @@ public:
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return  FollowCamera; }
 	FORCEINLINE bool ShouldRotateRootBone() const { return  bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return  bElimmed; }
+	FORCEINLINE UCombatComponent* GetCombat() const { return  Combat; }
 	AWeapon* GetEquippedWeapon();
 
 	FVector GetHitTarget() const;
