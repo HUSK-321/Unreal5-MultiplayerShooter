@@ -71,16 +71,21 @@ protected:
 	void ServerCheckMatchState();
 
 	UFUNCTION(Client, Reliable)
-	void ClientJoinMidGame(FName StateOfMatch, float Warmup, float Match, float StartingTime);
+	void ClientJoinMidGame(FName StateOfMatch, float Warmup, float Match, float cooldown, float StartingTime);
 
 private:
 
 	UPROPERTY()
 	TObjectPtr<class ABlasterHUD> BlasterHUD;
+
+	UPROPERTY()
+	TObjectPtr<class ABlasterGameMode> BlasterGameMode;
 	
 	float MatchTime = 0.f;
 
 	float WarmupTime = 0.f;
+
+	float CooldownTime = 0.f;
 
 	float LevelStartingTime = 0.f;
 	
