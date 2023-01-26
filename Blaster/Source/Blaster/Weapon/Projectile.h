@@ -28,9 +28,6 @@ protected:
 
 private:
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<class UProjectileMovementComponent> ProjectileMovementComponent;
-
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UParticleSystem> Tracer;
 
@@ -38,6 +35,9 @@ private:
 	TObjectPtr<class UParticleSystemComponent> TracerComponent;
 
 protected:
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UProjectileMovementComponent> ProjectileMovementComponent;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UParticleSystem> ImpactParticles;

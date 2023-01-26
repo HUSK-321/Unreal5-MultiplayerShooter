@@ -6,9 +6,9 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Sound/SoundCue.h"
-#include "Components/BoxComponent.h"
 #include "NiagaraComponent.h"
 #include "Components/AudioComponent.h"
+#include "RocketMovementComponent.h"
 
 AProjectileRocket::AProjectileRocket()
 	:
@@ -16,6 +16,10 @@ AProjectileRocket::AProjectileRocket()
 {
 	RocketMesh->SetupAttachment(GetRootComponent());
 	RocketMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	RocketMovementComponent = CreateDefaultSubobject<URocketMovementComponent>("RocketMovementComponent");
+	RocketMovementComponent->bRotationFollowsVelocity = true;
+	RocketMovementComponent->SetIsReplicated(true);
 }
 
 void AProjectileRocket::BeginPlay()
@@ -51,6 +55,10 @@ void AProjectileRocket::BeginPlay()
 void AProjectileRocket::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                               FVector NormalImpluse, const FHitResult& Hit)
 {
+	if(OtherActor == GetOwner())
+	{
+		return;
+	}
 	APawn* FiringPawn = GetInstigator();
 	if(FiringPawn && HasAuthority())
 	{

@@ -52,4 +52,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USoundAttenuation> LoopingSoundAttenuation;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class URocketMovementComponent> RocketMovementComponent;
 };

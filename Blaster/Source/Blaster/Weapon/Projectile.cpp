@@ -15,7 +15,6 @@
 AProjectile::AProjectile()
 	:
 	CollisionBox(CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"))),
-	ProjectileMovementComponent(CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent")),
 	Damage(20.f)
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,9 +28,6 @@ AProjectile::AProjectile()
 	CollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECC_SkeletalMesh, ECollisionResponse::ECR_Block);
-	
-	ProjectileMovementComponent->bRotationFollowsVelocity = false;
-	
 }
 
 void AProjectile::BeginPlay()
