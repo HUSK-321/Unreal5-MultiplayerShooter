@@ -18,18 +18,18 @@ public:
 	
 	virtual void Fire(const FVector& HitTarget) override;
 
-private:
+protected:
+
+	FVector TraceEndWithScatter(const FVector& TraceStart, const FVector& HitTarget);
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;
-
+	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UParticleSystem> ImpactParticles;
 
     UPROPERTY(EditAnywhere)
 	TObjectPtr<UParticleSystem> BeamParticles;
-
-private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UParticleSystem> MuzzleFlash;
@@ -39,4 +39,15 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundCue> HitSound;
+
+	/** Trace end with scatter */
+	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
+	float DistanceToSphere = 800.f;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
+	float SphereRadius = 75.f;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
+	bool bUseScatter = false;
+	
 };

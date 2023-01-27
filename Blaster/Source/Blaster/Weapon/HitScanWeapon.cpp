@@ -6,8 +6,10 @@
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
+#include "WeaponTypes.h"
 
 void AHitScanWeapon::Fire(const FVector& HitTarget)
 {
@@ -63,4 +65,15 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 	{
 		UGameplayStatics::PlaySoundAtLocation(World, FireSound, GetActorLocation());
 	}
+}
+
+FVector AHitScanWeapon::TraceEndWithScatter(const FVector& TraceStart, const FVector& HitTarget)
+{
+	FVector TotargetNormalized = (HitTarget - TraceStart).GetSafeNormal();
+	FVector SphereCenter = TraceStart + TotargetNormalized * DistanceToSphere;
+	FVector RandVector = UKismetMathLibrary::RandomUnitVector() * FMath::FRandRange(0.f, SphereRadius);
+	FVector EndLocation = SphereCenter + RandVector;
+	FVector ToEndLocation = EndLocation - TraceStart;
+
+	return FVector(TraceStart + ToEndLocation * TRACE_LENGTH / ToEndLocation.Size());
 }
