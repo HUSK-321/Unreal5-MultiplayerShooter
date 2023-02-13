@@ -37,6 +37,9 @@ public:
 	UPROPERTY(Replicated)
 	bool bDisableGamePlay;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowSniperScopeWidget(bool bShowScope);
+
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
