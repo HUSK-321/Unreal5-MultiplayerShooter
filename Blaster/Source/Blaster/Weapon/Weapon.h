@@ -146,4 +146,7 @@ public:
 
 	bool IsEmpty();
 	bool IsFull();
+
+	// custom depth
+	void EnableCustomDepth(bool bEnable);
 };
