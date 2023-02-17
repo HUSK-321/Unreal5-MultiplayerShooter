@@ -230,6 +230,7 @@ public:
 	FORCEINLINE bool ShouldRotateRootBone() const { return  bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return  bElimmed; }
 	FORCEINLINE UCombatComponent* GetCombat() const { return  Combat; }
+	FORCEINLINE UAnimMontage* GetReloadMontage() const { return  ReloadMontage; }
 	AWeapon* GetEquippedWeapon();
 
 	FVector GetHitTarget() const;

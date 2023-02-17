@@ -145,4 +145,5 @@ public:
 	FORCEINLINE int32 GetMagCapacity() { return MagCapacity; }
 
 	bool IsEmpty();
+	bool IsFull();
 };

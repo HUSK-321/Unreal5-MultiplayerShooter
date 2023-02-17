@@ -165,8 +165,13 @@ public:
 
 	void Reload();
 	void UpdateAmmoValues();
+	void UpdateShotgunAmmoValues();
 
 	UFUNCTION(BlueprintCallable)
 	void FinishReloading();
-		
+
+	UFUNCTION(BlueprintCallable)
+	void ShotgunShellReload();
+
+	void JumpToShotgunEnd();
 };
